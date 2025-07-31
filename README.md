@@ -1,64 +1,32 @@
-# MiniBMS
+# 基于Simulink的BMS模型开发与代码生成学习项目
 
-MiniBMS is a Simulink model designed to simulate a simple battery management system (BMS) for electric vehicles. The model incorporates a range of functionalities essential for efficient battery management, ensuring the safety and reliability of electric vehicle operations.
+## 1. 项目简介
 
-## Project Components
-| File | Purpose |
-| ---  | --- |
-|MiniBMS.slx|The main model containing the battery and BMS simulation.|
-|BMSLib.slx|Library used in MiniBMS.slx.|
-|MiniBMSVariables.m|Script containing the definitions of various parameters used in MiniBMS.slx.|
+这是一个基于开源项目 [MiniBMS by ks-santosh](https://github.com/ks-santosh/MiniBMS) 的个人学习项目。
 
-## Features
+本项目的核心目标是深入理解并实践汽车电子行业主流的**模型化开发(MBD, Model-Based Design)**核心流程，包括：
+* Simulink/Stateflow 建模
+* 使用 Embedded Coder 自动生成C代码
+* 对模型和生成代码进行软件在环(SIL)测试
 
-1. **State of Charge (SoC) Calculation**: Uses coulomb counting to accurately determine the battery's state of charge.
-2. **Battery Capacity and Energy Calculation**: Computes the total capacity and energy available in the battery pack.
-3. **Fault Detection**: Identifies faults in the system, including temperature, voltage, and contactor issues.
-4. **Voltage Monitoring**: Continuously tracks the voltage levels of the battery cells.
-5. **Temperature Monitoring**: Monitors the temperature of the battery cells to prevent overheating and ensure optimal performance.
-6. **BMS State Management**: Manages the various states of the BMS, ensuring proper operation and response to different conditions.
-7. **Contactor Control**: Controls the contactors to manage the connection and disconnection of the battery pack.
+## 2. 项目结构
 
-## Model Specifications
 
-- **Battery Configuration**: The BMS is designed for a battery pack consisting of 3 Li-Ion cells connected in series.
-- **Battery Modelling**: Utilizes tables of open circuit voltage (OCV) vs. SoC data and internal resistance vs. temperature data to simulate the battery behavior.
+.
+├── MiniBMS/                  # 存放原始Simulink模型文件 (.slx, .m等)
+│   ├── BATTERY_MANAGEMENT_SYSTEM_grt_rtw/  # Simulink自动生成的C代码
+│   └── ...
+├── LICENSE                   # 本项目遵循的MIT开源许可证
+└── README.md                 # 你正在阅读的说明文件
 
-## Usage
 
-To use MiniBMS, add the BMSLib.slx library to your MATLAB path and load the MiniBMS.slx model. The MiniBMSVariables.m script provides necessary parameter definitions and should be run before starting the simulation. The model was developed in MATLAB version R2018b and thus may not work in earlier versions.
+## 3. 核心实践内容
 
-## User Interaction
+* **模型解析:** 深入学习了 `MiniBMS.slx` 中关于SOC估算、均衡控制、故障诊断等模块的建模方法和逻辑实现。
+* **代码生成:** 成功配置 `Embedded Coder`，从Simulink模型自动生成了符合嵌入式标准的C代码，存放于 `BATTERY_MANAGEMENT_SYSTEM_grt_rtw` 目录中。
+* **在环测试:** 搭建了**软件在环(SIL)**测试环境，对生成的C代码进行回环测试，以验证模型核心算法的正确性与可靠性。
+* **学习与分析:** 对比了自动生成的代码与传统手写代码的风格与结构，加深了对MBD开发流程优势的理解。
 
-- **Ignition and Charger Control**: Users can turn on the ignition or connect the charger using interactive switches during the simulation run.
-- **Current and Temperature Control**: Users can adjust the current and temperature settings using sliders, which influence the simulated battery voltage monitored by the BMS.
+## 4. 致谢
 
-## Demo
-
-### Idle Mode
-
-The BMS starts in IDLE mode.
-
-![Idle](/Demo/Idle.PNG)
-
-### Discharge Mode
-
-If the ignition is switched on and there are no faults, the BMS transitions to DISCHARGE mode.
-
-![Discharge](/Demo/Discharge.PNG)
-
-### Fault During Discharge
-
-If a fault occurs during discharge, the BMS reverts to IDLE mode. It won't restart until the fault is resolved and the ignition is switched off and then on.
-During discharge if there is a fault the BMS falls back to IDLE mode and won't restart until the fault is healed and the ignition is switched off and then on.
-
-![Fault in discharge](/Demo/DischargeFault.PNG)
-
-### Charge Mode
-When the charge plug is connected, the BMS transitions to CHARGE mode, even if the ignition is on. Ensure the current value is set to negative; otherwise, the battery will discharge.
-![Charge](/Demo/Charge.PNG)
-
-### Fault During Charge
-If a fault occurs during charging, the BMS stops operation. It will only resume if the fault is resolved and the plug is reconnected.
-
-![Fault in charge](/Demo/ChargeFault.PNG)
+感谢 [ks-santosh](https://github.com/ks-santosh) 开源了优秀的 `MiniBMS` 项目，为本次学习实践提供了宝贵的资源。
