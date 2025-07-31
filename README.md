@@ -11,14 +11,12 @@
 
 ## 2. 项目结构
 
-
 .
 ├── MiniBMS/                  # 存放原始Simulink模型文件 (.slx, .m等)
 │   ├── BATTERY_MANAGEMENT_SYSTEM_grt_rtw/  # Simulink自动生成的C代码
 │   └── ...
 ├── LICENSE                   # 本项目遵循的MIT开源许可证
 └── README.md                 # 你正在阅读的说明文件
-
 
 ## 3. 核心实践内容
 
